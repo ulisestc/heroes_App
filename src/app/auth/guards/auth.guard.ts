@@ -7,7 +7,7 @@ import {
   UrlSegment, 
   UrlTree 
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 
 import { AuthService } from '../services/auth.service'; 
@@ -23,15 +23,26 @@ export const authGuard: CanActivateFn = (route, state):
   const router = inject(Router);
 
   
-  if (authService.auth.id) {
-    return true; // Sí puede navegar a la ruta
-  }
+  return authService.verificarAutenticacion()
+        .pipe(
+          tap(estaAutenticado => {
+            if ( !estaAutenticado ) {
+              router.navigate(['./auth/login']);
+            }
+          })
+        );
+
+
+
+  // if (authService.auth.id) {
+  //   return true; // Sí puede navegar a la ruta
+  // }
 
   
-  console.log('Bloqueado por el AuthGuard - CanActivate');
+  // console.log('Bloqueado por el AuthGuard - CanActivate');
   
-  // MEJORA: En lugar de 'return false', redirigimos al login
-  return router.createUrlTree(['/login']); 
+  // // MEJORA: En lugar de 'return false', redirigimos al login
+  // return router.createUrlTree(['/login']); 
 };
 
 /**
@@ -45,13 +56,15 @@ export const canMatchGuard: CanMatchFn = (route: Route, segments: UrlSegment[]):
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  
-  if (authService.auth.id) {
-    return true; // Sí puede descargar el módulo
-  }
-  
-  console.log('Bloqueado por el AuthGuard - CanMatch (CanLoad)');
-  
-  // MEJORA: En lugar de 'return false', redirigimos al login
-  return router.createUrlTree(['/login']);
+  // Llamar al método del servicio inyectado directamente (no usar `this` en funciones standalone)
+  return authService.verificarAutenticacion()
+        .pipe(
+          tap(estaAutenticado => {
+            if ( !estaAutenticado ) {
+              router.navigate(['./auth/login']);
+            }
+          })
+        );
+
+
 };

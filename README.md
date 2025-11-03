@@ -1,27 +1,47 @@
 # HeroesApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+Para este proyecto se ocupó la versión 16.2.16 de [Angular CLI](https://github.com/angular/angular-cli).
 
-## Development server
+## Angular Material
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+La versión de Angular Material que ocupamos fue la 11.2.12.
 
-## Code scaffolding
+## NVM
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Para la compatibilidad con Angular debido a que es una herramienta para gestionar múltiples versiones de Node.js 
 
-## Build
+## NPX
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Ocupamos NPX que se incluye con npm y nos permite ejecutar comandos de paquetes sin necesidad de instalarlos globalmente.
 
-## Running unit tests
+## Json-server
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Ocupamos esta herramienta para simular un backend.
 
-## Running end-to-end tests
+## Git 
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Utilizado para el control de las versiones.
 
-## Further help
+## Correr el servidor
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Para correr el servdior utilizamos `npx ng serve` . Redirijiendonos a `http://localhost:4200/`. 
+
+## Intruscciiones de instalación
+
+Configuración de Angular:
+1. Abrir una terminal (o Git Bash si estás en Windows).
+2. Navega a la carpeta donde quieras descargar tu proyecto.
+3. Usa el comando git clone con la URL del repositorio principal.
+
+Configuración del servidor:
+1. Descargar json-server con el comando npx npm install -g json-server
+2. Crea una nueva carpeta paralela a heroes_App llamada heroes_server.
+3. Descarga dentro de esta carpeta el archivo db.json que es la "base de datos" necesaria para este proyecto.
+
+## Instrucciones de ejecución
+
+Iniciar el backend:
+1. Ejecutar el comando json-server --watch db.json
+
+Iniciar el frontend:
+1. Ejecutar el comando npx ng server -o

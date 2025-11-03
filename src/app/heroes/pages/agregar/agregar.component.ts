@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Heroe, Publisher } from '../../interfaces/heroes.interface';
+import { switchMap } from 'rxjs/operators';
+
 import { HeroesService } from '../../services/heroes.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-agregar',
@@ -31,9 +34,19 @@ export class AgregarComponent implements OnInit {
     alt_img: '',
   }
 
-  constructor( private heroesService: HeroesService ) { }
+  constructor( private heroesService: HeroesService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+   ) { }
 
   ngOnInit(): void {
+
+    this.activatedRoute.params
+      .pipe(
+        switchMap( ({ id }) => this.heroesService.getHeroePorId( id ) )
+      )
+      .subscribe( heroe => this.heroe = heroe );
+
   }
 
 
@@ -42,10 +55,22 @@ export class AgregarComponent implements OnInit {
       return;
     }
 
-    this.heroesService.agregarHeroe( this.heroe )
-      .subscribe( resp => {
-        console.log('Respuesta', resp); 
-      })
+    if( !this.heroe.id ){
+      // Crear
+      this.heroesService.agregarHeroe( this.heroe )
+        .subscribe( heroe => {
+          this.router.navigate(['/heroes/editar', heroe.id]);
+          console.log('Creado', heroe);
+        })
+    } else {
+      // Actualizar
+      this.heroesService.actualizarHeroe( this.heroe )
+        .subscribe( heroe => { 
+          console.log('Actualizado', heroe);
+        });
+    }
+
+
 
   }
 }

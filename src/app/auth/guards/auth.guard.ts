@@ -1,70 +1,56 @@
-import { inject } from '@angular/core';
-import { 
-  CanActivateFn, 
-  CanMatchFn, 
-  Router, 
-  Route, 
-  UrlSegment, 
-  UrlTree 
-} from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { CanActivate, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanLoad, CanActivate {
+
+  constructor( private authService: AuthService,
+               private router: Router ) {}
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+
+    // if ( this.authService.auth.id ) {
+    //     return true;
+    //   }
+
+    // console.log('Bloqueado por el AuthGuard - CanActivate');
+    // return false;
+    return this.authService.verificaAutenticacion()
+            .pipe(
+              tap( estaAutenticado => {
+                if( !estaAutenticado ) {
+                  this.router.navigate(['./auth/login']);
+                }
+              })
+            )
+  }
+
+  canLoad(
+    route: Route,
+    segments: UrlSegment[]): Observable<boolean> | boolean {
+
+      return this.authService.verificaAutenticacion()
+              .pipe(
+                tap( estaAutenticado => {
+                  if( !estaAutenticado ) {
+                    this.router.navigate(['./auth/login']);
+                  }
+                })
+              );
 
 
-import { AuthService } from '../services/auth.service'; 
+      // if ( this.authService.auth.id ) {
+      //   return true;
+      // }
 
-/**
- * Guard para CAN ACTIVATE (CanActivateFn):
- * Decide si se puede NAVEGAR a una ruta (mostrar un componente).
- */
-export const authGuard: CanActivateFn = (route, state): 
-  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree => {
-
-  const authService = inject(AuthService);
-  const router = inject(Router);
-
-  
-  return authService.verificarAutenticacion()
-        .pipe(
-          tap(estaAutenticado => {
-            if ( !estaAutenticado ) {
-              router.navigate(['./auth/login']);
-            }
-          })
-        );
-
-
-
-  // if (authService.auth.id) {
-  //   return true; // Sí puede navegar a la ruta
-  // }
-
-  
-  // console.log('Bloqueado por el AuthGuard - CanActivate');
-  
-  // // MEJORA: En lugar de 'return false', redirigimos al login
-  // return router.createUrlTree(['/login']); 
-};
-
-/**
- * Guard para CAN MATCH (CanMatchFn):
- * Decide si un módulo (lazy loading) se puede DESCARGAR.
- * Este es el reemplazo moderno de 'CanLoad'.
- */
-export const canMatchGuard: CanMatchFn = (route: Route, segments: UrlSegment[]): 
-  Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree => {
-  
-  const authService = inject(AuthService);
-  const router = inject(Router);
-
-  // Llamar al método del servicio inyectado directamente (no usar `this` en funciones standalone)
-  return authService.verificarAutenticacion()
-        .pipe(
-          tap(estaAutenticado => {
-            if ( !estaAutenticado ) {
-              router.navigate(['./auth/login']);
-            }
-          })
-        );
-
-
-};
+      // console.log('Bloqueado por el AuthGuard - CanLoad');
+      // return false;
+  }
+}

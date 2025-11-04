@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
 })
 export class AuthService {
 
-  private baseUrl: string = environment.baseUrl;  
+  private baseUrl: string = environment.baseUrl;
   private _auth: Auth | undefined;
 
   get auth(): Auth {
@@ -19,7 +19,7 @@ export class AuthService {
 
   constructor( private http: HttpClient) { }
 
-  verificarAutenticacion(): Observable<boolean> {
+  verificaAutenticacion(): Observable<boolean> {
     if( !localStorage.getItem('token') ){
       return of(false);
     }
@@ -38,5 +38,10 @@ export class AuthService {
         tap( auth => this._auth = auth),
         tap( auth => localStorage.setItem('token', auth.id) )
       );
+  }
+
+  logout(){
+    this._auth = undefined;
+    localStorage.removeItem('token');
   }
 }

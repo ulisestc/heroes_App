@@ -1,5 +1,5 @@
+import { Heroe } from './../../interfaces/heroes.interface';
 import { Component, OnInit } from '@angular/core';
-import { Heroe } from '../../interfaces/heroes.interface';
 import { HeroesService } from '../../services/heroes.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
@@ -23,7 +23,10 @@ export class BuscarComponent implements OnInit {
 
   buscando() {
     this.heroesService.getSugerencias(this.termino.trim())
-    .subscribe( heroes => this.heroes = heroes );
+    .subscribe( heroes => {
+      console.log('Heroes encontrados:', heroes);
+      this.heroes = heroes;
+    });
   }
 
   opcionSeleccionada(event: MatAutocompleteSelectedEvent){

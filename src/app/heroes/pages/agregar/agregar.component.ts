@@ -78,7 +78,7 @@ export class AgregarComponent implements OnInit {
     } else {
       // Actualizar
       this.heroesService.actualizarHeroe( this.heroe )
-        .subscribe( heroe => { 
+        .subscribe( heroe => {
           this.mostrarSnackBar('Registro actualizado correctamente');
         });
     }
@@ -88,7 +88,7 @@ export class AgregarComponent implements OnInit {
   borrarHeroe() {
 
     const dialog = this.dialog.open( ConfirmarComponent, {
-      width: '250px',
+      width: '300px',
       data: this.heroe
     });
 
@@ -110,5 +110,5 @@ export class AgregarComponent implements OnInit {
       duration: 2500
     });
   }
-    
+
 }

@@ -6,6 +6,12 @@ import { Heroe } from '../../interfaces/heroes.interface';
   selector: 'app-confirmar',
   templateUrl: './confirmar.component.html',
   styles: [
+    `
+      .confirmar-container {
+        margin: 20px;
+      }
+
+  `
   ]
 })
 export class ConfirmarComponent implements OnInit {
@@ -20,7 +26,7 @@ export class ConfirmarComponent implements OnInit {
     this.dialogRef.close(true);
   }
 
-  cancelar() {  
+  cancelar() {
     this.dialogRef.close();
   }
 

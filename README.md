@@ -34,7 +34,7 @@ Configuración de Angular:
 3. Usa el comando git clone con la URL del repositorio principal.
 
 Configuración del servidor:
-1. Descargar json-server con el comando npx npm install -g json-server
+1. Descargar json-server con el comando npx npm install -g json-server@0.17.4
 2. Crea una nueva carpeta paralela a heroes_App llamada heroes_server.
 3. Descarga dentro de esta carpeta el archivo db.json que es la "base de datos" necesaria para este proyecto.
 
